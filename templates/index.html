@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>
+    {% block title %}
+      Base title
+    {% endblock %}
+    </title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oswald">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open Sans">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="shortcut icon" href="{{ url_for('static', path='icons/favicon.ico') }}">
+    <script src="{{ url_for('static', path='js/bootstrap.min.js') }}"></script>
+
+    <style>
+      h1,h2,h3,h4,h5,h6 {
+        font-family: "Arial", sans-serif
+      }
+
+      body {
+        font-family: "Open Sans", sans-serif;
+        background-color: lightgrey;
+      }
+
+      .header {
+        padding: 4rem;
+        text-align: center;
+        background: white;
+      }
+
+      .text-nowrap {
+        background-color: rgba(79,78,78,0.51);
+      }
+
+      .display-container{
+        position: relative;
+        letter-spacing: 0.27rem;
+      }
+
+      .padding-large {
+        padding:0.8rem 1.6rem;
+      }
+
+      .leftcolumn {
+        float: left;
+        width: 75%;
+      }
+
+      .rightcolumn {
+        float: left;
+        width: 25%;
+        padding-left: 1rem;
+      }
+
+      .card {
+        margin: 1.07rem;
+        padding: 0.7rem;
+      }
+
+      .card-right {
+        margin: 1.07rem;
+      }
+
+      hr {
+        opacity: 0;
+      }
+
+      .large {
+        font-size: 1.2rem;
+      }
+
+      .list-group-item {
+        padding: 1.07rem;
+      }
+    </style>
+  </head>
+
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar" style="background-color: #6c757d">
+      <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+
+        <a href="#" class="btn btn-secondary" role="button" data-bs-toggle="button">
+          <i class="fa fa-facebook-official"></i>
+        </a>
+
+        <a href="#" class="btn btn-secondary" role="button" data-bs-toggle="button">
+          <i class="fa fa-snapchat"></i>
+        </a>
+
+        <a href="#" class="btn btn-secondary" role="button" data-bs-toggle="button">
+          <i class="fa fa-flickr"></i>
+        </a>
+
+        <a href="#" class="btn btn-secondary" role="button" data-bs-toggle="button">
+          <i class="fa fa-twitter"></i>
+        </a>
+
+        <a href="#" class="btn btn-secondary" role="button" data-bs-toggle="button">
+          <i class="fa fa-linkedin"></i>
+        </a>
+
+      </div>
+      <form class="d-flex">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-secondary" type="submit"><i class="fa fa-search"></i></button>
+      </form>
+    </nav>
+
+    {% block body %}
+    Base body
+    {% endblock %}
+
+    <footer class="container-fluid" style="padding: 2.4rem; background-color: #6c757d">
+      <a href="#" class="btn btn-dark padding-large" style="margin-bottom: 1rem; background-color: black">
+        <i class="fa fa-arrow-up" style="margin-right: 0.5rem"></i>To the top
+      </a>
+      <p>Powered by <span style="text-decoration: underline">Lisovskii Vasilii</span></p>
+    </footer>
+
+    <script type="text/javascript">
+      function likeFunction(x) {
+        x.style.fontWeight = "bold";
+        x.innerHTML = "✓ Liked";
+      }
+      const deleteMeme = async (id) => {
+        try{
+          const res = await fetch('/memes/' + id + '/', {
+            method: 'DELETE',
+            headers: {
+              'Accept': 'application/json',
+            },
+          });
+        } catch (error) {
+          console.log(error)
+        }
+      };
+      const updateMeme = async (id) => {
+        try{
+          const res = await fetch('/memes/' + id + '/', {
+            method: 'PUT',
+            headers: {
+              'Accept': 'application/json',
+            },
+          });
+          const response = await res.json()
+          console.log(response)
+        } catch (error) {
+          console.log(error)
+        }
+      }
+    </script>
+  </body>
+</html>

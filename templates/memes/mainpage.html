@@ -1,0 +1,98 @@
+{% extends 'index.html' %}
+
+{% block title %}
+  Memes
+{% endblock %}
+
+{% block body %}
+<div class="container" style="max-width:108rem">
+  <header class="header">
+    <h1 style="font-size: 3.5rem;"><b>MEMES FOR EVERYONE</b></h1>
+    <h6>Welcome to the world of <span class="text-nowrap">Memes</span></h6>
+  </header>
+
+  <div class="row border" style="padding: 0.54rem 1.08rem">
+    <div class="leftcolumn">      
+      <nav class="ms-3 mt-3">
+        <ul class='pagination'>
+          {% if page > 1 %}
+            <li class='page-item'>
+              <a class='page-link' href='?page={{ page - 1 }}&limit={{ limit }}'>Previous</a>
+            </li>
+          {% endif %}
+          {% if total_pages > 1 %}
+            <li class='page-item'>
+              <a class='page-link'>{{ page }}</a>
+            </li>
+          {% endif %}
+          {% if page < total_pages %}
+            <li class='page-item'>
+              <a class='page-link' href='?page={{ page + 1 }}&limit={{ limit }}'>Next</a>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+      {% for meme in memes %}
+        <div class="card">
+          <div class="card-header text-center">
+            <a class="btn-light" href="/memes/{{ meme.id }}/"><h3>{{ meme.title }}</h3></a>
+          </div>
+
+          <div class="card-body">
+            <p class="card-text text-center">{{ meme.description }}</p>
+            <p class="text-center"><img class="img-fluid" src="{{ meme.file.s3_url }}" alt="{{ meme.title }}"></p>
+            <button type="button" class="btn btn-light" onclick="likeFunction(this)">
+              <b><i class="fa fa-thumbs-up"></i> Like</b>
+            </button>
+          </div>
+        </div>
+        <hr>
+      {% endfor %}
+      <h4 class="ms-3">Add new meme</h4>
+      <div>
+        <form action="/memes/" method="post" enctype="multipart/form-data">
+          <div class="container wrapper flex-grow-1">
+            <div class="card">
+              <div class="card-body">
+                <div>
+                  <label for="inputTitle" class="col-sm-2 col-form-label">Title</label>
+                  <div class="col-sm-10">
+                    <input class="form-control is" id="inputTitle" name="title" required>
+                  </div>
+                </div>
+                <div>
+                  <label for="inputDescription" class="col-sm-2 col-form-label">Description</label>
+                  <div class="col-sm-10">
+                    <textarea class="form-control" id="inputDescription" name="description"></textarea>
+                  </div>
+                </div>
+                <div>
+                  <label for="inputImage" class="col-sm-2 col-form-label">Image</label>
+                  <div class="col-sm-10">
+                    <input type="file" class="form-control" id="inputImage" name="file" required>
+                  </div>
+                </div>
+              </div>
+              <div class="ms-3">
+                <input type="submit" value="Submit" class="btn btn-primary">
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    
+    <div class="rightcolumn mt-5">
+      <div class="card-right">
+        <img src="{{ url_for('static', path='/images/small-mem.jpg') }}"
+             class="card-img-top" alt="Meme">
+        <div class="card-body bg-black px-3 py-2" style="color: white">
+          <h4 class="card-title">Meme World</h4>
+          <p class="card-text">This is a for everyone who loves memes, and who simply cannot live without memes. Share your memes and just enjoy.</p>
+        </div>
+      </div>
+      <hr>
+    </div>
+  </div>
+</div>
+{% endblock %}

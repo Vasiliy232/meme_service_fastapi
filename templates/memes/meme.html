@@ -1,0 +1,75 @@
+{% extends 'index.html' %}
+
+{% from 'macros/back_to_main.html' import back_to_main_page %}
+
+{% block title %}
+Meme #{{ meme.id }}
+{% endblock %}
+
+{% block body %}
+<div class="container wrapper flex-grow-1">
+  <div class="card">
+    <div class="card-header text-center" style="background-color: white">
+      <h3>{{ meme.title }}</h3>
+    </div>
+
+    <div class="card-body">
+      <p class="card-text text-center">{{ meme.description }}</p>
+      <p class="text-center"><img class="img-fluid" src="{{ meme.file.s3_url }}" alt="{{ meme.title }}"></p>
+      <button type="button" class="btn btn-light d-inline" onclick="likeFunction(this)">
+        <b><i class="fa fa-thumbs-up"></i> Like</b>
+      </button>
+      <a href="/memes/" type="button" class="btn btn-dark" onclick="deleteMeme({{meme.id}})">Delete</a>
+      <!-- <button type="button" class="btn btn-primary" onclick="updateMeme({{meme.id}})">Update</button> -->
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+        Update
+      </button>
+      {{ back_to_main_page() }}
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Edit meme</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="/memes/{{ meme.id }}/" method="post" enctype="multipart/form-data">
+          <input type="hidden" name="method" value="PUT" />
+          <div class="container wrapper flex-grow-1">
+            <div class="card">
+              <div class="card-body">
+                <div>
+                  <label for="inputTitle" class="col-sm-2 col-form-label">Title</label>
+                  <div class="col-sm-10">
+                    <input class="form-control is" id="inputTitle" name="title" value="{{ meme.title }}" required>
+                  </div>
+                </div>
+                <div>
+                  <label for="inputDescription" class="col-form-label">Description</label>
+                  <div class="col-sm-10">
+                    <textarea class="form-control" id="inputDescription" name="description" value="{{ meme.description }}"></textarea>
+                  </div>
+                </div>
+                <div>
+                  <label for="inputImage" class="col-sm-2 col-form-label">Image</label>
+                  <div class="col-sm-10">
+                    <input type="file" class="form-control" id="inputImage" name="file">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>          
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <input type="submit" class="btn btn-primary" value="Update">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
